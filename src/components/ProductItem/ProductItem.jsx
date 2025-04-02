@@ -1,9 +1,10 @@
 import { Card, CardMedia, CardContent, Typography, Button, Chip, Box, useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ProductItem = ({ product }) => {
   const isWeb = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const hasDiscount = product.discountPrice && product.discountPrice < product.price;
-
+  const navigate = useNavigate();
   return (
     <Card
       sx={{
@@ -23,7 +24,7 @@ const ProductItem = ({ product }) => {
       <Box sx={{ position: "relative", height: 200 }}>
         <CardMedia
           component="img"
-          image={product.image}
+          image={product.images[0]}
           alt={product.name}
           sx={{ objectFit: "contain", width: "100%", height: "100%" }}
         />
@@ -63,6 +64,7 @@ const ProductItem = ({ product }) => {
         {/* Botón "Ver más" con subrayado */}
         <Button
           color="secondary"
+          onClick={() => navigate(`/products/${product.id}`)}
           sx={{
             fontSize: 14,
             fontWeight: "bold",
