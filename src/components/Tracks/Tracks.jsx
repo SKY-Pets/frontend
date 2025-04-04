@@ -1,6 +1,6 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import animationData from "./dog.json"; 
-
+import bolsa from "./bolsa.png";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 
@@ -27,6 +27,7 @@ const Tracks = () => {
         src={animationData}
         style={{ height: "150px", width: "150px" }}
       />
+      <img src={bolsa} alt="Tracks" style={{ width: "50px", position: "absolute", top: "-15",right: window.innerWidth < 600 ? "75%" : "30%" ,transform: "rotate(-15deg)" }} /> 
     </Box>
   );
 };

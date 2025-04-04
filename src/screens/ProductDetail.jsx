@@ -4,13 +4,14 @@ import { getProducts } from "../api/api";
 import { Container, Typography, Button, Box, TextField, IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import { Carousel } from "react-responsive-carousel";
+import PaymentModal from "../components/PaymentModal/PaymentModal";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
-
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   useEffect(() => {
     getProducts().then((data) => {
       const foundProduct = data.find((p) => p.id === parseInt(id));
@@ -32,13 +33,16 @@ const ProductDetail = () => {
             ))}
           </Carousel>
         </Box>
+
         <Box flex={2}>
           <Typography variant="h4" fontWeight="bold" gutterBottom>
             {product.name.toUpperCase()}
           </Typography>
-          <Typography variant="h5" color="primary" fontWeight="bold">
+          <Typography variant="h5" color="success" fontWeight="bold">
             ${product.price.toLocaleString()}
           </Typography>
+          <Typography variant="body1" fontWeight="bold" sx={{ cursor: "pointer" }} mt={2} onClick={() => setPaymentModalOpen(true)}>Ver metodos de pago</Typography>
+            {paymentModalOpen && <PaymentModal isOpen={paymentModalOpen} onClose={() => setPaymentModalOpen(false)} price={product.price}/>}
           <Typography variant="body1" mt={2}>
             {product.stock ? "En stock" : "Sin stock"}
           </Typography>
@@ -46,6 +50,7 @@ const ProductDetail = () => {
           <Typography variant="body2" mt={1}><strong>Presentación:</strong> {product.presentation}</Typography>
           <Typography variant="body2" mt={1}><strong>Instrucciones de uso:</strong> {product.instructions}</Typography>
           <Box mt={2} display="flex" alignItems="center" gap={1}>
+            <Typography variant="body1" fontWeight="bold">Cantidad:</Typography>
             <IconButton 
               color="black" 
               onClick={() => setQuantity(Math.max(1, quantity - 1))} 
