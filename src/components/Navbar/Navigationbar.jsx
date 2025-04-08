@@ -46,13 +46,12 @@ const Navigationbar = () => {
       title: "Contacto",
       path: "/contact",
       icon: <DashboardIcon />,
-      visible: isLoggedIn ? true : false,
     },
   ].filter((item) => item.visible === true);
 
   return (
     <>
-      <AppBar position="static" elevation={0}>
+      <AppBar position="sticky" elevation={0}>
         <Toolbar>
           {/* Botón para menú móvil */}
           <IconButton
