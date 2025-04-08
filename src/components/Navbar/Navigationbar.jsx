@@ -46,6 +46,7 @@ const Navigationbar = () => {
       title: "Contacto",
       path: "/contact",
       icon: <DashboardIcon />,
+      visible: true,
     },
   ].filter((item) => item.visible === true);
 
