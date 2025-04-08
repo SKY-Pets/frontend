@@ -34,8 +34,6 @@ const ProductDetail = () => {
   const handleAddToCart = () => {
     if (product && quantity > 0) {
       addToCart({ ...product, quantity }); // Agrega el producto al carrito con la cantidad seleccionada
-      console.log(`Producto agregado: ${product}, Cantidad: ${quantity}`);
-      console.log(product);
       updateQuantity(product.id, quantity);
       
     }

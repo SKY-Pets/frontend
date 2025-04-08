@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Home from "./screens/Home";
+import Contact from "./screens/Contact";
 import Product from "./screens/ProductDetail";
 
 function App() {
@@ -14,6 +15,22 @@ function App() {
         element={
           <Layout>
             <Home />
+          </Layout>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <Layout>
+            <Home />
+          </Layout>
+        }
+      />
+      <Route
+        path="/contact"
+        element={
+          <Layout>
+            <Contact />
           </Layout>
         }
       />

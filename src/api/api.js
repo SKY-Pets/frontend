@@ -16,7 +16,7 @@ const hardcodedProducts = [
     name: "Snack Pancita Chiken",
     images: ["/mockimages/pancita0.jpeg", "/mockimages/pancita1.jpeg","/mockimages/pancita2.jpeg"],
     price: 3500,
-    stock: false,
+    stock: true,
     details: "Deliciosos snacks de pancita de pollo, perfectos para premiar a tu mascota.",
     presentation: "Bolsa de 150g",
     instructions: "Suministrar como premio entre comidas."
@@ -40,6 +40,16 @@ const hardcodedProducts = [
     details: "Masticable natural que fortalece la dentadura de tu mascota.",
     presentation: "Bolsa de 150g",
     instructions: "Ideal para perros de raza mediana y grande."
+  },
+  {
+    id: 5,
+    name: "Yogurt Natural",
+    images: ["/mockimages/yogurt1.png"],
+    price: 5000,
+    stock: false,
+    details: "Sin azucares ni conservantes, congelado.",
+    presentation: "Pote de 140cc",
+    instructions: "No exceder la cantidad recomendada por día."
   }
 ];
 
