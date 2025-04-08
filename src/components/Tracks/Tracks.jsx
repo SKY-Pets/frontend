@@ -27,7 +27,6 @@ const Tracks = () => {
         src={animationData}
         style={{ height: "150px", width: "150px" }}
       />
-      <img src={bolsa} alt="Tracks" style={{ width: "50px", position: "absolute", top: "-15",right: window.innerWidth < 600 ? "75%" : "30%" ,transform: "rotate(-15deg)" }} /> 
     </Box>
   );
 };

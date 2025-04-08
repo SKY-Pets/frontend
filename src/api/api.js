@@ -14,7 +14,7 @@ const hardcodedProducts = [
   {
     id: 2,
     name: "Snack Pancita Chiken",
-    images: ["/mockimages/pancita0.jpeg", "/mockimages/pancita1.jpeg","/mockimages/pancita2.jpeg","/mockimages/pancita3.jpeg"],
+    images: ["/mockimages/pancita0.jpeg", "/mockimages/pancita1.jpeg","/mockimages/pancita2.jpeg"],
     price: 3500,
     stock: false,
     details: "Deliciosos snacks de pancita de pollo, perfectos para premiar a tu mascota.",

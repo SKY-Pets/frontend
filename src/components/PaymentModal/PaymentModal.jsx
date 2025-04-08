@@ -2,11 +2,11 @@ import { Dialog, DialogTitle, DialogContent, IconButton, Button, Box, Typography
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 
-const PaymentModal = ({ isOpen, onClose, price }) => {
+const PaymentModal = ({ isOpen, onClose, priceEfectivo, priceTransferencia }) => {
   const [selectedMethod, setSelectedMethod] = useState(null);
   const paymentOptions = {
-    efectivo: price * 0.9, // 10% de descuento
-    transferencia: price
+    efectivo: priceEfectivo,
+    transferencia: priceTransferencia
   };
 
   return (
@@ -20,6 +20,7 @@ const PaymentModal = ({ isOpen, onClose, price }) => {
       </Box>
 
       <DialogContent>
+        {/* Botones para seleccionar el método */}
         <Box display="flex" justifyContent="center" gap={2} mt={2}>
           <Button 
             variant={selectedMethod === "efectivo" ? "contained" : "outlined"} 
@@ -35,7 +36,7 @@ const PaymentModal = ({ isOpen, onClose, price }) => {
               }
             }}
           >
-            Efectivo (10% descuento)
+            Efectivo
           </Button>
 
           <Button 
@@ -56,10 +57,29 @@ const PaymentModal = ({ isOpen, onClose, price }) => {
           </Button>
         </Box>
 
+        {/* Descripción y precio */}
         {selectedMethod && (
-          <Typography mt={2} textAlign="center">
-            <strong>{selectedMethod}</strong>.{selectedMethod === "efectivo" ? " Podés pagar en efectivo retirando personalmente en nuestros puntos de retiro": "Al finalizar la compra te va a llegar un email con los datos bancarios para realizar la transferencia"} 
-          </Typography>
+          <>
+            <Typography mt={2} textAlign="center">
+              <strong>{selectedMethod}</strong>.{selectedMethod === "efectivo" ? " Podés pagar en efectivo retirando personalmente en nuestros puntos de retiro" : " Al finalizar la compra te llegará un email con los datos bancarios para realizar la transferencia."}
+            </Typography>
+            <Box display="flex" justifyContent="center" mt={2}>
+              <Button
+                variant="outlined"
+                color="inherit"
+                sx={{
+                  borderColor: "black",
+                  color: "black",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white"
+                  }
+                }}
+              >
+                Total : <strong> ${paymentOptions[selectedMethod]}</strong> 
+              </Button>
+            </Box>
+          </>
         )}
       </DialogContent>
     </Dialog>

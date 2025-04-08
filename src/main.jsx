@@ -10,7 +10,7 @@ import "@fontsource/lato";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import { AppProvider } from "./context/AppContext.jsx"; // Importar el Provider
+import { AppProvider } from "./context/AppContext.jsx"; // Importar el Provider
 
 const theme = createTheme({
   typography: {
@@ -36,9 +36,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <CssBaseline />
-        {/* <AppProvider> */}
+        <AppProvider>
           <App />
-        {/* </AppProvider> */}
+        </AppProvider>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>

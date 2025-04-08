@@ -1,23 +1,35 @@
-import { Card, CardMedia, CardContent, Typography, Button, Chip, Box, useMediaQuery } from "@mui/material";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Button,
+  Chip,
+  Box,
+  useMediaQuery,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const ProductItem = ({ product }) => {
   const isWeb = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const hasDiscount = product.discountPrice && product.discountPrice < product.price;
   const navigate = useNavigate();
+
   return (
     <Card
+      onClick={() => navigate(`/products/${product.id}`)}
       sx={{
         backgroundColor: "white",
         fontFamily: "Lato",
         minWidth: isWeb ? "270px" : "100%",
-        height: "100%", // Mantiene la altura uniforme
+        height: "100%",
         borderRadius: 2,
         boxShadow: 2,
         position: "relative",
         display: "flex",
-        flexDirection: "column", // Asegura una estructura estable
+        flexDirection: "column",
         paddingLeft: 2,
+        cursor: "pointer",
       }}
     >
       {/* Imagen del producto */}
@@ -61,22 +73,7 @@ const ProductItem = ({ product }) => {
           )}
         </Box>
 
-        {/* Botón "Ver más" con subrayado */}
-        <Button
-          color="secondary"
-          onClick={() => navigate(`/products/${product.id}`)}
-          sx={{
-            fontSize: 14,
-            fontWeight: "bold",
-            fontFamily: "Lato",
-            textTransform: "none",
-            borderBottom: "2px solid #D35D5D",
-            borderRadius: 0,
-            mt: 1,
-          }}
-        >
-          Ver más
-        </Button>
+       
       </CardContent>
     </Card>
   );

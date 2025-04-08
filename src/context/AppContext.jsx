@@ -1,199 +1,109 @@
-// import React, { createContext, useState, useEffect } from "react";
-// import { fetchForm, fetchForms, fetchPetsByCriteria } from "../api/api"; // Importar fetchForms y fetchPetsByCriteria
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 
-// export const AppContext = createContext();
+// Crear el contexto
+const AppContext = createContext();
 
-// export const AppProvider = ({ children }) => {
-//     const [user, setUser] = useState(null);
-//     const [petId, setPetId] = useState(null);
-//     const [petName, setpetName] = useState(null);
-//     const [petPhotoUrl, setpetPhotoUrl] = useState(null);
-//     const [formAdoption, setformAdoption] = useState(null);
-//     const [answerNumber, setAnswerNumber] = useState(0);
-//     const [formAdoptionAswered, setFormAdoptionAswered] = useState(initialFormAdoptionAswered);
-//     const [formsData, setFormsData] = useState({ forms: [], pets: [] }); // Nuevo estado para formularios y mascotas
+// Reducer para manejar el estado del carrito
+const cartReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_TO_CART":
+      const existingItem = state.cart.find((item) => item.id === action.payload.id);
+      if (existingItem) {
+        return {
+          ...state,
+          cart: state.cart.map((item) =>
+            item.id === action.payload.id
+              ? { ...item, quantity: item.quantity + action.payload.quantity }
+              : item
+          ),
+        };
+      }
+      return {
+        ...state,
+        cart: [...state.cart, { ...action.payload, quantity: action.payload.quantity }],
+      };
 
-//     useEffect(() => {
-//         const loadFormAdoption = async () => {
-//             try {
-//                 const data = await fetchForm("adopcion");
-//                 setformAdoption(data);
-//             } catch (error) {
-//                 console.error("Error fetching adoption form:", error);
-//             }
-//         };
+    case "REMOVE_FROM_CART":
+      return {
+        ...state,
+        cart: state.cart.filter((item) => item.id !== action.payload),
+      };
 
-//         loadFormAdoption();
-//         loadInitialData(); // Cargar datos iniciales
-//     }, []);
+    case "UPDATE_QUANTITY":
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        ),
+      };
 
-//     const loadInitialData = async () => {
-//         try {
-//             const [forms, pets] = await Promise.all([
-//                 fetchForms(),
-//                 fetchPetsByCriteria({ status: "Disponible" })
-//             ]);
-//             setFormsData({ forms, pets });
-//         } catch (error) {
-//             console.error("Error loading initial data:", error);
-//         }
-//     };
+    case "CLEAR_CART":
+      return {
+        ...state,
+        cart: [],
+      };
 
-//     const updateFormsData = (newData) => {
-//         setFormsData(newData);
-//     };
+    default:
+      return state;
+  }
+};
 
-//     const login = (userData) => {
-//         setUser(userData);
-//     };
+// Estado inicial del contexto
+const initialState = {
+  cart: JSON.parse(localStorage.getItem("cart")) || [], // Cargar carrito de localStorage
+};
 
-//     const logout = () => {
-//         setUser(null);
-//     };
+// Proveedor del contexto
+export const AppProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(cartReducer, initialState);
 
-//     const savePetId = (id) => {
-//         setPetId(id);
-//     };
+  // Efecto para guardar el carrito en localStorage
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(state.cart));
+  }, [state.cart]);
 
-//     const savePetName = (name) => {
-//         setpetName(name);
-//     };
+  // Funciones para manejar el carrito
+  const addToCart = (product, quantity = 1) => {
+    dispatch({ type: "ADD_TO_CART", payload: { ...product, quantity } });
+  };
 
-//     const savePetPhotoUrl = (url) => {
-//         setpetPhotoUrl(url);
-//     };
+  const removeFromCart = (id) => {
+    dispatch({ type: "REMOVE_FROM_CART", payload: id });
+  };
 
-//     const saveFormAdoption = (data) => {
-//         setformAdoption(data);
-//     };
+  const updateQuantity = (id, quantity) => {
+    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } });
+  };
 
-//     const saveFormAdoptionAswered = (data) => {
-//         setFormAdoptionAswered(data);
-//     };
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" });
+  };
 
-//     return (
-//         <AppContext.Provider
-//             value={{
-//                 user,
-//                 login,
-//                 logout,
-//                 petId,
-//                 petName,
-//                 petPhotoUrl,
-//                 savePetId,
-//                 savePetName,
-//                 savePetPhotoUrl,
-//                 formAdoption,
-//                 saveFormAdoption,
-//                 formAdoptionAswered,
-//                 saveFormAdoptionAswered,
-//                 answerNumber,
-//                 setAnswerNumber,
-//                 formsData, // Agregar formsData al contexto
-//                 updateFormsData, // Agregar updateFormsData al contexto
-//             }}
-//         >
-//             {children}
-//         </AppContext.Provider>
-//     );
-// };
+  const calculateTotal = () => {
+    return state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
 
-// const initialFormAdoptionAswered = {
-//   tipo: "adopcion",
-//   PetId: "44444",
-//   PetName: "Freya",
-//   PetPhotoUrl: "http://example.com/images/rex.jpg",
-//   respuestas: [
-//     {
-//       preguntaId: 1,
-//     },
-//     {
-//       preguntaId: 2,
-//     },
-//     {
-//       preguntaId: 3,
-//     },
-//     {
-//       preguntaId: 4,
-//     },
-//     {
-//       preguntaId: 5,
-//     },
-//     {
-//       preguntaId: 6,
-//     },
-//     {
-//       preguntaId: 7,
-//     },
-//     {
-//       preguntaId: 8,
-//     },
-//     {
-//       preguntaId: 9,
-//     },
-//     {
-//       preguntaId: 10,
-//     },
-//     {
-//       preguntaId: 11,
-//     },
-//     {
-//       preguntaId: 12,
-//     },
-//     {
-//       preguntaId: 13,
-//     },
-//     {
-//       preguntaId: 14,
-//     },
-//     {
-//       preguntaId: 15,
-//     },
-//     {
-//       preguntaId: 16,
-//     },
-//     {
-//       preguntaId: 17,
-//     },
-//     {
-//       preguntaId: 18,
-//     },
-//     {
-//       preguntaId: 19,
-//     },
-//     {
-//       preguntaId: 20,
-//     },
-//     {
-//       preguntaId: 21,
-//     },
-//     {
-//       preguntaId: 22,
-//     },
-//     {
-//       preguntaId: 23,
-//     },
-//     {
-//       preguntaId: 24,
-//     },
-//     {
-//       preguntaId: 25,
-//     },
-//     {
-//       preguntaId: 26,
-//     },
-//     {
-//       preguntaId: 27,
-//     },
-//     {
-//       preguntaId: 28,
-//     },
-//     {
-//       preguntaId: 29,
-//     },
-//     {
-//       preguntaId: 30,
-//       respuesta: false,
-//     },
-//   ],
-// };
+  return (
+    <AppContext.Provider
+      value={{
+        cart: state.cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        calculateTotal,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+// Hook para usar el contexto
+export const useAppContext = () => {
+  return useContext(AppContext);
+};
+
+export default AppContext;
