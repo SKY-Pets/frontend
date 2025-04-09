@@ -3,6 +3,7 @@ import Layout from "./components/Layout/Layout";
 import Home from "./screens/Home";
 import Contact from "./screens/Contact";
 import Product from "./screens/ProductDetail";
+import Checkout from "./screens/Checkout";
 
 function App() {
   const isLoggedIn = localStorage.getItem("uid");
@@ -42,7 +43,16 @@ function App() {
           </Layout>
         }
       />
+      <Route
+        path="/checkout"
+        element={
+          <Layout>
+            <Checkout />
+          </Layout>
+        }
+      />
     </Routes>
+    
   );
 }
 

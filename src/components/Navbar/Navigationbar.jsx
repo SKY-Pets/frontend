@@ -8,7 +8,7 @@ import {
   Typography,
   Badge,
 } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PetIcon from "@mui/icons-material/Pets";
@@ -16,10 +16,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import AppContext from "../../context/AppContext"; // Importa tu AppContext
 import NavListDrawer from "./NavListDrawer";
 import CartModal from "../CartModal/CartModal"; // Importa el componente del modal del carrito
+import "./Navbar.css";
 
 const Navigationbar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openModal, setOpenModal] = useState(false); // Estado para el modal del carrito
+  const [isShaking, setIsShaking] = useState(false); // Estado para la animación
 
   // Obtén el estado del carrito desde el contexto
   const { cart } = useContext(AppContext);
@@ -27,7 +29,15 @@ const Navigationbar = () => {
   // Calcula el total de productos en el carrito
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-  const isLoggedIn = localStorage.getItem("uid");
+  // Detecta cambios en el carrito y activa la animación
+  useEffect(() => {
+    if (cart.length > 0) {
+      setIsShaking(true);
+      // Desactiva la animación después de 1 segundo
+      const timeout = setTimeout(() => setIsShaking(false), 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [cart]);
 
   const navLinks = [
     {
@@ -52,7 +62,7 @@ const Navigationbar = () => {
 
   return (
     <>
-      <AppBar position="sticky" elevation={0}>
+      <AppBar position="sticky" elevation={0} sx={{ bgcolor: "white" }}>
         <Toolbar>
           {/* Botón para menú móvil */}
           <IconButton
@@ -72,7 +82,7 @@ const Navigationbar = () => {
           {/* Título */}
           <Typography
             variant="h5"
-            color="text"
+            color="black"
             fontWeight="bold"
             pl={3}
             flexGrow={1}
@@ -93,33 +103,34 @@ const Navigationbar = () => {
               </Button>
             ))}
           </Box>
-
-          {/* Ícono de carrito */}
-          <Box sx={{ ml: 2 }}>
-            <IconButton
-              color="inherit"
-              onClick={() => setOpenModal(true)} // Abre el modal al hacer clic
-            >
-              <Badge
-                badgeContent={cartCount}
-                color="error"
-                sx={{
-                  "& .MuiBadge-badge": {
-                    backgroundColor: "#ff5722", // Color del contador
-                    color: "#fff",
-                  },
-                }}
+          <div className={isShaking ? 'shake-animation' : ''}>
+            {/* Ícono de carrito */}
+            <Box sx={{ ml: 2 }}>
+              <IconButton
+                color="inherit"
+                onClick={() => setOpenModal(true)} // Abre el modal al hacer clic
               >
-                <img
-                  src="/bolsa.png"
-                  alt="Carrito"
-                  width={35}
-                  height={35}
-                  style={{ borderRadius: "50%" }}
-                />
-              </Badge>
-            </IconButton>
-          </Box>
+                <Badge
+                  badgeContent={cartCount}
+                  color="error"
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      backgroundColor: "#ff5722", // Color del contador
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  <img
+                    src="/bolsa.png"
+                    alt="Carrito"
+                    width={35}
+                    height={35}
+                    style={{ borderRadius: "50%" }}
+                  />
+                </Badge>
+              </IconButton>
+            </Box>
+          </div>
         </Toolbar>
       </AppBar>
 

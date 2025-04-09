@@ -87,8 +87,8 @@ const Contact = () => {
           margin: "auto",
         }}
       >
-        <TextField name="name" label="Nombre" fullWidth required />
-        <TextField name="email" label="Correo Electrónico" fullWidth required />
+        <TextField name="to_name" label="Nombre" fullWidth required />
+        <TextField name="from_name" label="Correo Electrónico" fullWidth required />
         <TextField
           name="message"
           label="Mensaje"

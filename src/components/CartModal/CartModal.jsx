@@ -17,10 +17,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete"; // Importar el ícono de tacho de basura
 import AppContext from "../../context/AppContext"; // Asegúrate de tener AppContext configurado
+import { useNavigate } from "react-router-dom";
 
 const CartModal = ({ open, handleClose }) => {
   const { cart, removeFromCart } = useContext(AppContext); // Accede a la función para eliminar items
   const [paymentMethod, setPaymentMethod] = useState("Tarjeta de crédito");
+  const navigate = useNavigate();
 
   const handleChangePaymentMethod = (event) => {
     setPaymentMethod(event.target.value);
@@ -130,7 +132,7 @@ const CartModal = ({ open, handleClose }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => alert("Compra iniciada!")}
+            onClick={() => navigate("/checkout")}
           >
             Iniciar compra
           </Button>
