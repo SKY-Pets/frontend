@@ -132,7 +132,10 @@ const CartModal = ({ open, handleClose }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate("/checkout")}
+            onClick={() => {
+              handleClose(); // Cierra el modal
+              navigate("/checkout"); // Luego redirige al checkout
+            }}
           >
             Iniciar compra
           </Button>
