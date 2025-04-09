@@ -67,7 +67,7 @@ const Navigationbar = () => {
           {/* Botón para menú móvil */}
           <IconButton
             sx={{ display: { xs: "block", sm: "none" } }}
-            color="inherit"
+            color="black"
             size="large"
             onClick={() => setOpenDrawer(true)}
           >

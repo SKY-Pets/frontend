@@ -18,7 +18,7 @@ const NavListDrawer = ({ navLinks }) => {
           <ListItem
             sx={{
               justifyContent: "center",
-              bgcolor: theme.palette.primary.main,
+              bgcolor: theme.palette.background.default,
             }}
           >
             <img src="/logo-arg.png" width={50}></img>

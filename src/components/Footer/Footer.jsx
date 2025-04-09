@@ -29,8 +29,8 @@ const Footer = () => {
           top: "auto",
           bottom: 0,
           mt: 1,
-          bgcolor: theme.palette.primary,
-          color: theme.palette.primary.contrastText,
+          bgcolor: theme.palette.background.default,
+          color: theme.palette.primary.main,
         }}
       >
         <Toolbar sx={{ justifyContent: "center", flexDirection: isMobile ? "column" : "row" }}>
