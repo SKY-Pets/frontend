@@ -43,8 +43,9 @@ const Checkout = () => {
   const steps = ["Envío", "Pago", "Revisión"];
 
   const { clearCart } = useContext(AppContext);
-
+  window.scrollTo({top: 0, behavior: 'smooth'});
   const handleNext = () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
     } else {

@@ -33,6 +33,8 @@ const CartModal = ({ open, handleClose }) => {
     0
   );
 
+  const isCartEmpty = cart.length === 0;
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -102,6 +104,7 @@ const CartModal = ({ open, handleClose }) => {
             onChange={handleChangePaymentMethod}
             fullWidth
             sx={{ mt: 1 }}
+            disabled={isCartEmpty}
           >
             <MenuItem value="Efectivo">Efectivo</MenuItem>
             <MenuItem value="Transferencia bancaria">
@@ -136,6 +139,7 @@ const CartModal = ({ open, handleClose }) => {
               handleClose(); // Cierra el modal
               navigate("/checkout"); // Luego redirige al checkout
             }}
+            disabled={isCartEmpty}
           >
             Iniciar compra
           </Button>
@@ -146,3 +150,4 @@ const CartModal = ({ open, handleClose }) => {
 };
 
 export default CartModal;
+
