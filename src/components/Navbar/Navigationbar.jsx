@@ -86,6 +86,9 @@ const Navigationbar = () => {
             fontWeight="bold"
             pl={3}
             flexGrow={1}
+            onClick={() => window.location.href = '/'}
+            sx={{ cursor: "pointer" }}
+
           >
             SKY Pets
           </Typography>
@@ -94,7 +97,7 @@ const Navigationbar = () => {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navLinks.map((item) => (
               <Button
-                color="inherit"
+                color="primary"
                 key={item.title}
                 component="a"
                 href={item.path}
@@ -103,7 +106,8 @@ const Navigationbar = () => {
               </Button>
             ))}
           </Box>
-          <div className={isShaking ? 'shake-animation' : ''}>
+          {location.pathname !== "/checkout" ? (
+            <div className={isShaking ? 'shake-animation' : ''}>
             {/* Ícono de carrito */}
             <Box sx={{ ml: 2 }}>
               <IconButton
@@ -131,6 +135,10 @@ const Navigationbar = () => {
               </IconButton>
             </Box>
           </div>
+          ) : (
+            <div></div>
+          )}
+          
         </Toolbar>
       </AppBar>
 

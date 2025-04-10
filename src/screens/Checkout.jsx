@@ -1,4 +1,4 @@
-import React, {useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import Cart from "../components/Cart/Cart"; // Asumo que este es el componente del carrito que mencionaste
+import Sim from "../components/Sim/Sim";
 import AppContext from "../context/AppContext";
 
 const Checkout = () => {
@@ -42,10 +43,11 @@ const Checkout = () => {
 
   const steps = ["Envío", "Pago", "Revisión"];
 
-  const { clearCart } = useContext(AppContext);
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  const { cart, clearCart } = useContext(AppContext);
+  const isCartEmpty = cart.length === 0;
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const handleNext = () => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
     } else {
@@ -268,7 +270,9 @@ const Checkout = () => {
         return null;
     }
   };
-
+  if (isCartEmpty) {
+    return <Sim />;
+  }
   return (
     <Box display="flex" flexDirection={{ xs: "column", md: "row" }}>
       <Box flex={1} p={2}>

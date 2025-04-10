@@ -15,12 +15,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete"; // Importar el ícono de tacho de basura
-import AppContext from "../../context/AppContext"; // Asegúrate de tener AppContext configurado
+import DeleteIcon from "@mui/icons-material/Delete";
+import AppContext from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import Sim from "../Sim/Sim";
 
 const CartModal = ({ open, handleClose }) => {
-  const { cart, removeFromCart } = useContext(AppContext); // Accede a la función para eliminar items
+  const { cart, removeFromCart } = useContext(AppContext);
   const [paymentMethod, setPaymentMethod] = useState("Tarjeta de crédito");
   const navigate = useNavigate();
 
@@ -51,7 +52,6 @@ const CartModal = ({ open, handleClose }) => {
           p: 3,
         }}
       >
-        {/* Header */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" fontWeight="bold">
             Carrito de compras
@@ -60,94 +60,94 @@ const CartModal = ({ open, handleClose }) => {
             <CloseIcon />
           </IconButton>
         </Box>
+        {isCartEmpty ? (
+          <Sim />
+        ) : (
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Divider sx={{ my: 2 }} />
 
-        <Divider sx={{ my: 2 }} />
-
-        {/* Lista de productos */}
-        <List>
-          {cart.map((item) => (
-            <React.Fragment key={item.id}>
-              <ListItem
-                alignItems="flex-start"
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    color="error"
-                    onClick={() => removeFromCart(item.id)} // Llamar a la función para eliminar
+            <List>
+              {cart.map((item) => (
+                <React.Fragment key={item.id}>
+                  <ListItem
+                    alignItems="flex-start"
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        color="error"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
                   >
-                    <DeleteIcon />
-                  </IconButton>
-                }
+                    <ListItemAvatar>
+                      <Avatar src={item.images[0]} alt={item.name} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={item.name}
+                      secondary={`Cantidad: ${item.quantity} | Subtotal: $${(
+                        item.price * item.quantity
+                      ).toLocaleString()}`}
+                    />
+                  </ListItem>
+                  <Divider component="li" />
+                </React.Fragment>
+              ))}
+            </List>
+
+            <Box mt={2}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Método de pago:
+              </Typography>
+              <Select
+                value={paymentMethod}
+                onChange={handleChangePaymentMethod}
+                fullWidth
+                sx={{ mt: 1 }}
+                disabled={isCartEmpty}
               >
-                <ListItemAvatar>
-                  <Avatar src={item.images[0]} alt={item.name} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={item.name}
-                  secondary={`Cantidad: ${item.quantity} | Subtotal: $${(
-                    item.price * item.quantity
-                  ).toLocaleString()}`}
-                />
-              </ListItem>
-              <Divider component="li" />
-            </React.Fragment>
-          ))}
-        </List>
+                <MenuItem value="Efectivo">Efectivo</MenuItem>
+                <MenuItem value="Transferencia bancaria">
+                  Transferencia bancaria
+                </MenuItem>
+              </Select>
+            </Box>
 
-        {/* Método de pago */}
-        <Box mt={2}>
-          <Typography variant="subtitle1" fontWeight="bold">
-            Método de pago:
-          </Typography>
-          <Select
-            value={paymentMethod}
-            onChange={handleChangePaymentMethod}
-            fullWidth
-            sx={{ mt: 1 }}
-            disabled={isCartEmpty}
-          >
-            <MenuItem value="Efectivo">Efectivo</MenuItem>
-            <MenuItem value="Transferencia bancaria">
-              Transferencia bancaria
-            </MenuItem>
-          </Select>
-        </Box>
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              sx={{ textAlign: "right", mt: 2 }}
+            >
+              Total: ${totalAmount.toLocaleString()}
+            </Typography>
 
-        {/* Total */}
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          sx={{ textAlign: "right", mt: 2 }}
-        >
-          Total: ${totalAmount.toLocaleString()}
-        </Typography>
-
-        {/* Botones */}
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mt={3}
-        >
-          <Button variant="outlined" onClick={handleClose}>
-            Cerrar
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              handleClose(); // Cierra el modal
-              navigate("/checkout"); // Luego redirige al checkout
-            }}
-            disabled={isCartEmpty}
-          >
-            Iniciar compra
-          </Button>
-        </Box>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mt={3}
+            >
+              <Button variant="outlined" onClick={handleClose}>
+                Cerrar
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  handleClose();
+                  navigate("/checkout");
+                }}
+                disabled={isCartEmpty}
+              >
+                Iniciar compra
+              </Button>
+            </Box>
+          </Box>
+        )}
       </Box>
     </Modal>
   );
 };
 
 export default CartModal;
-

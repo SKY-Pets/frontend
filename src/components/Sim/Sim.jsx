@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Player } from "@lottiefiles/react-lottie-player";
-import animationData from "./task-person.json";
+import animationData from "./cart.json";
 
 const Sim = ({ isFail }) => {
   return (
@@ -11,6 +11,7 @@ const Sim = ({ isFail }) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        bgcolor: "background.paper"
       }}
     >
       <Player
@@ -25,8 +26,16 @@ const Sim = ({ isFail }) => {
       >
         {isFail
           ? "Ocurrió un error, intente de nuevo"
-          : "Agrega contenido para empezar"}
+          : "El carrito está vacio"}
+        
       </Typography>
+
+      <Typography variant="h6" sx={{ mt: 2 }}>
+        Explore nuestros productos para agregarlos al carrito
+      </Typography>
+      <Button variant="contained" sx={{ mt: 2 }} href="/products">
+        Explorar
+      </Button>
     </Box>
   );
 };
