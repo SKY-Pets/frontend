@@ -86,7 +86,7 @@ const CartModal = ({ open, handleClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={item.name}
-                      secondary={`Cantidad: ${item.quantity} | Subtotal: $${(
+                      secondary={`Cantidad: ${item.quantity} x Precio unitario: $${item.price.toLocaleString()} | Subtotal: $${(
                         item.price * item.quantity
                       ).toLocaleString()}`}
                     />
@@ -96,7 +96,7 @@ const CartModal = ({ open, handleClose }) => {
               ))}
             </List>
 
-            <Box mt={2}>
+            {/* <Box mt={2}>
               <Typography variant="subtitle1" fontWeight="bold">
                 Método de pago:
               </Typography>
@@ -112,7 +112,7 @@ const CartModal = ({ open, handleClose }) => {
                   Transferencia bancaria
                 </MenuItem>
               </Select>
-            </Box>
+            </Box> */}
 
             <Typography
               variant="h6"
@@ -129,7 +129,7 @@ const CartModal = ({ open, handleClose }) => {
               mt={3}
             >
               <Button variant="outlined" onClick={handleClose}>
-                Cerrar
+                Seguir comprando
               </Button>
               <Button
                 variant="contained"

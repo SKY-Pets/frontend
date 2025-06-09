@@ -137,8 +137,8 @@ const Checkout = () => {
               Método de envío
             </Typography>
             <Typography>
-              Gratis: Retirar en el local - Alvear 1969, Corrientes Capital. Se
-              acordará semanalmente. No olvidar la conservadora para mantener la
+              Gratis: Punto de Retiro - Alvear 1969, Corrientes Capital. Se
+              acordará semanalmente. En productos congelados no olvidar la conservadora para mantener la
               cadena de frío.
             </Typography>
           </Box>

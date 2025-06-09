@@ -14,13 +14,14 @@ import { Carousel } from "react-responsive-carousel";
 import PaymentModal from "../components/PaymentModal/PaymentModal";
 import AppContext from "../context/AppContext"; // Importa tu AppContext
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import CartModal from "../components/CartModal/CartModal"; 
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
-
+  const [openModal, setOpenModal] = useState(false); // Estado para el modal del carrito
   // Acceder a la función addToCart desde el contexto
   const { addToCart, updateQuantity } = useContext(AppContext);
 
@@ -35,7 +36,7 @@ const ProductDetail = () => {
     if (product && quantity > 0) {
       addToCart({ ...product, quantity }); // Agrega el producto al carrito con la cantidad seleccionada
       updateQuantity(product.id, quantity);
-      
+      setOpenModal(true)
     }
   };
 
@@ -134,6 +135,8 @@ const ProductDetail = () => {
           >
             Agregar al carrito
           </Button>
+          {/* Modal del carrito */}
+          <CartModal open={openModal} handleClose={() => setOpenModal(false)} />
         </Box>
       </Box>
     </Container>

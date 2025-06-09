@@ -35,14 +35,14 @@ const Home = () => {
               fontSize: { xs: "1.8rem", md: "3rem" }, // Ajusta tamaño en móviles
             }}
           >
-            HOLA! humano
+            HOLA! 
           </Typography>
           <Divider
             sx={{ backgroundColor: "black", height: 6, width: "30%", my: 2 }}
           />
           <Typography variant="body1" color="textSecondary" mb={4}>
-            Explora nuestra tienda y descubre los mejores productos y servicios
-            para tu compa.
+            Explora nuestra tienda y descubre los mejores productos 
+            para tu compa 🦦
           </Typography>
         </Box>
 
