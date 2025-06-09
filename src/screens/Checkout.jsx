@@ -65,7 +65,7 @@ const Checkout = () => {
   
     emailjs
       .send(
-        "service_k3rz50i", // ID del servicio
+        "service_sly4t6n", // ID del servicio service_k3rz50i
         "template_w7yvhut", // ID de la plantilla
         {
           formData:formData,
