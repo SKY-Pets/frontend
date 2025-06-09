@@ -73,7 +73,9 @@ const ProductItem = ({ product }) => {
           )}
         </Box>
 
-       
+        <Typography fontSize={12} fontWeight={600} fontFamily="Lato" color="gray">
+          {product.details}
+        </Typography>
       </CardContent>
     </Card>
   );
