@@ -1,313 +1,169 @@
 import React, { useContext, useState } from "react";
-import {
-  Box,
-  Button,
-  Stepper,
-  Step,
-  StepLabel,
-  TextField,
-  Typography,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  FormControl,
-  FormLabel,
-  TextareaAutosize,
-} from "@mui/material";
-import Cart from "../components/Cart/Cart"; // Asumo que este es el componente del carrito que mencionaste
-import Sim from "../components/Sim/Sim";
+import { Box, Button, Stepper, Step, StepLabel, Modal, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import Cart from "../components/Cart/Cart";
 import AppContext from "../context/AppContext";
+import ShippingStep from "../components/Checkout/ShippingStep";
+import PaymentStep from "../components/Checkout/PaymentStep";
+import ReviewStep from "../components/Checkout/ReviewStep";
+import Sim from "../components/Sim/Sim";
+import emailjs from "@emailjs/browser";
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
-    envio: {
-      email: "",
-      nombre: "",
-      apellido: "",
-      dni: "",
-      telefono: "",
-    },
-    pago: {
-      metodo: "",
-      calle: "",
-      numero: "",
-      piso: "",
-      dpto: "",
-      ciudad: "",
-      provincia: "Corrientes",
-      codigoPostal: "3400",
-      notas: "",
-    },
+    envio: { email: "", nombre: "", apellido: "", dni: "", telefono: "", metodoEnvio: "retiro" },
+    pago: { metodo: "efectivo", calle: "", numero: "", notas: "" },
   });
-
+  const [errors, setErrors] = useState({});
+  const [modalOpen, setModalOpen] = useState(false); // Estado para controlar el modal
+  const [modalOkOpen, setModalOkOpen] = useState(false);
+  const navigate = useNavigate();
   const steps = ["Envío", "Pago", "Revisión"];
-
   const { cart, clearCart } = useContext(AppContext);
   const isCartEmpty = cart.length === 0;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  const handleNext = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    if (activeStep < steps.length - 1) {
-      setActiveStep((prev) => prev + 1);
-    } else {
-      console.log("Datos finales: ", formData);
-    }
-  };
-
-  const handleBack = () => {
-    if (activeStep > 0) {
-      setActiveStep((prev) => prev - 1);
-    }
-  };
-
-  const handleFinalize = () => {
-    console.log("Datos finales: ", formData);
-    // Vaciar el carrito de compras
-    clearCart(); // Asegúrate de tener acceso a esta función desde el contexto o props
-  };
 
   const handleInputChange = (step, field, value) => {
     setFormData((prev) => ({
       ...prev,
-      [step]: {
-        ...prev[step],
-        [field]: value,
-      },
+      [step]: { ...prev[step], [field]: value },
     }));
+    setErrors((prev) => ({ ...prev, [field]: "" })); // Limpiar errores al escribir
   };
+
+  const validateStep = () => {
+    if (activeStep === 0) {
+      const requiredFields = ["email", "nombre", "apellido", "dni", "telefono"];
+      const newErrors = requiredFields.reduce((acc, field) => {
+        if (!formData.envio[field].trim()) {
+          acc[field] = "Este campo es obligatorio";
+        }
+        return acc;
+      }, {});
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0; // Si no hay errores, la validación es exitosa
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateStep()) {
+      if (activeStep === steps.length - 1) {
+        handleFinalize();
+      } else {
+        setActiveStep((prev) => prev + 1);
+      }
+    }
+  };
+
+  const handleFinalize = () => {
+    const formattedCart = cart.map(
+      (item) => `${item.name} (Cantidad: ${item.quantity}, Precio: $${item.price})`
+    ).join(", ");
+  
+    const total = cart.reduce((acc, item) => acc + item.quantity * item.price, 0);
+  
+    emailjs
+      .send(
+        "service_k3rz50i", // ID del servicio
+        "template_w7yvhut", // ID de la plantilla
+        {
+          formData:formData,
+          carrito: formattedCart,
+          total: `$${total}`,
+          email: formData.envio.email
+        },
+        "CHl40qhYDkG3nJsEZ" // Clave pública
+      )
+      .then(() => {
+        setModalOkOpen(true); // Mostrar el modal de confirmación
+        
+      })
+      .catch((error) => {
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+  
 
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
-        return (
-          <Box>
-            <Typography variant="h6">Contacto</Typography>
-            <TextField
-              label="Email"
-              fullWidth
-              margin="normal"
-              value={formData.envio.email}
-              onChange={(e) =>
-                handleInputChange("envio", "email", e.target.value)
-              }
-            />
-
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Datos de quién retira
-            </Typography>
-            <TextField
-              label="Nombre"
-              fullWidth
-              margin="normal"
-              value={formData.envio.nombre}
-              onChange={(e) =>
-                handleInputChange("envio", "nombre", e.target.value)
-              }
-            />
-            <TextField
-              label="Apellido"
-              fullWidth
-              margin="normal"
-              value={formData.envio.apellido}
-              onChange={(e) =>
-                handleInputChange("envio", "apellido", e.target.value)
-              }
-            />
-            <TextField
-              label="DNI"
-              fullWidth
-              margin="normal"
-              value={formData.envio.dni}
-              onChange={(e) =>
-                handleInputChange("envio", "dni", e.target.value)
-              }
-            />
-            <TextField
-              label="Teléfono"
-              fullWidth
-              margin="normal"
-              value={formData.envio.telefono}
-              onChange={(e) =>
-                handleInputChange("envio", "telefono", e.target.value)
-              }
-            />
-
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Método de envío
-            </Typography>
-            <Typography>
-              Gratis: Punto de Retiro - Alvear 1969, Corrientes Capital. Se
-              acordará semanalmente. En productos congelados no olvidar la conservadora para mantener la
-              cadena de frío.
-            </Typography>
-          </Box>
-        );
+        return <ShippingStep formData={formData} handleInputChange={handleInputChange} errors={errors} />;
       case 1:
-        return (
-          <Box>
-            <Typography variant="h6">
-              Seleccioná cómo querés pagar tu compra
-            </Typography>
-            <FormControl component="fieldset" sx={{ mt: 2 }}>
-              <FormLabel component="legend">Método de Pago</FormLabel>
-              <RadioGroup
-                value={formData.pago.metodo}
-                onChange={(e) =>
-                  handleInputChange("pago", "metodo", e.target.value)
-                }
-              >
-                <FormControlLabel
-                  value="transferencia"
-                  control={<Radio />}
-                  label="Transferencia bancaria: ALIAS mp.skypets.ctes."
-                />
-                <FormControlLabel
-                  value="efectivo"
-                  control={<Radio />}
-                  label="Efectivo"
-                />
-              </RadioGroup>
-            </FormControl>
-
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Datos para facturación
-            </Typography>
-            <TextField
-              label="Calle"
-              fullWidth
-              margin="normal"
-              value={formData.pago.calle}
-              onChange={(e) =>
-                handleInputChange("pago", "calle", e.target.value)
-              }
-            />
-            <TextField
-              label="Número"
-              fullWidth
-              margin="normal"
-              value={formData.pago.numero}
-              onChange={(e) =>
-                handleInputChange("pago", "numero", e.target.value)
-              }
-            />
-            <TextField
-              label="Piso (opcional)"
-              fullWidth
-              margin="normal"
-              value={formData.pago.piso}
-              onChange={(e) =>
-                handleInputChange("pago", "piso", e.target.value)
-              }
-            />
-            <TextField
-              label="Departamento (opcional)"
-              fullWidth
-              margin="normal"
-              value={formData.pago.dpto}
-              onChange={(e) =>
-                handleInputChange("pago", "dpto", e.target.value)
-              }
-            />
-            <TextField
-              label="Ciudad"
-              fullWidth
-              margin="normal"
-              value={formData.pago.ciudad}
-              onChange={(e) =>
-                handleInputChange("pago", "ciudad", e.target.value)
-              }
-            />
-            <TextField
-              label="Notas del pedido (opcional)"
-              fullWidth
-              multiline
-              rows={4}
-              margin="normal"
-              value={formData.pago.notas}
-              onChange={(e) =>
-                handleInputChange("pago", "notas", e.target.value)
-              }
-            />
-          </Box>
-        );
+        return <PaymentStep formData={formData} handleInputChange={handleInputChange} />;
       case 2:
-        return (
-          <Box>
-            <Typography variant="h6">Revisión</Typography>
-            <Typography sx={{ mt: 2 }}>
-              <strong>Email:</strong> {formData.envio.email}
-            </Typography>
-            <Typography>
-              <strong>Nombre:</strong> {formData.envio.nombre}
-            </Typography>
-            <Typography>
-              <strong>Apellido:</strong> {formData.envio.apellido}
-            </Typography>
-            <Typography>
-              <strong>DNI:</strong> {formData.envio.dni}
-            </Typography>
-            <Typography>
-              <strong>Teléfono:</strong> {formData.envio.telefono}
-            </Typography>
-
-            <Typography sx={{ mt: 2 }}>
-              <strong>Método de Pago:</strong> {formData.pago.metodo}
-            </Typography>
-            <Typography>
-              <strong>Domicilio:</strong> {formData.pago.calle}{" "}
-              {formData.pago.numero}
-            </Typography>
-            <Typography>
-              <strong>Ciudad:</strong> {formData.pago.ciudad}
-            </Typography>
-            <Typography>
-              <strong>Notas:</strong> {formData.pago.notas || "Ninguna"}
-            </Typography>
-          </Box>
-        );
+        return <ReviewStep formData={formData} />;
       default:
         return null;
     }
   };
+
   if (isCartEmpty) {
     return <Sim />;
   }
+
   return (
-    <Box display="flex" flexDirection={{ xs: "column", md: "row" }}>
-      <Box flex={1} p={2}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-
-        <Box mt={4}>{renderStepContent(activeStep)}</Box>
-
-        <Box mt={4} display="flex" justifyContent="space-between">
-          <Button
-            disabled={activeStep === 0}
-            onClick={handleBack}
-            variant="outlined"
-          >
-            Anterior
-          </Button>
-          <Button
-            onClick={
-              activeStep === steps.length - 1 ? handleFinalize : handleNext
-            }
-            variant="contained"
-          >
-            {activeStep === steps.length - 1 ? "Finalizar" : "Siguiente"}
-          </Button>
+    <Box>
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      <Box display="flex" justifyContent="space-around" flexDirection={{ xs: "column", md: "row" }}>
+        <Box>{renderStepContent(activeStep)}</Box>
+        <Box width={{ xs: "100%", md: "30%" }} p={2}>
+          <Cart />
         </Box>
       </Box>
-
-      <Box width={{ xs: "100%", md: "30%" }} p={2}>
-        <Cart />
+      <Box display="flex" justifyContent="space-between" mt={2}>
+        <Button disabled={activeStep === 0} onClick={() => setActiveStep((prev) => prev - 1)}>
+          Anterior
+        </Button>
+        <Button onClick={handleNext}>
+          {activeStep === steps.length - 1 ? "Finalizar" : "Siguiente"}
+        </Button>
       </Box>
+      <Modal open={modalOkOpen} onClose={() => setModalOkOpen(false)}>
+        
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
+          <Box alignItems="center" display="flex" justifyContent="center" mt={2}>
+          <img src="/logo-arg.png" width={50}></img>
+          </Box>
+          <Typography variant="h6" textAlign="center">
+            ¡Compra exitosa!
+          </Typography>
+          <Typography mt={2} textAlign="center">
+            En breve nos contactaremos vía correo electrónico o teléfono. Muchas gracias por confiar en SKY Pets !! 🦦
+          </Typography>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{ mt: 3 }}
+            onClick={() => {
+              setModalOpen(false);
+              navigate("/");
+              clearCart(); // Vaciar el carrito
+              
+            }}
+          >
+            Volver al inicio
+          </Button>
+        </Box>
+      </Modal>
     </Box>
   );
 };
