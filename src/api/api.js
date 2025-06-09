@@ -8,7 +8,7 @@ const hardcodedProducts = [
     price: 3000,
     stock: true,
     details: "Un snack premium elaborado con hígado de vaca.",
-    presentation: "Bolsa contenedora de 100g neto",
+    presentation: "Bolsa contenedora de 100gr",
     instructions: "Administrar de acuerdo a la indicación del veterinario.",
   },
   {
@@ -18,7 +18,7 @@ const hardcodedProducts = [
     price: 3500,
     stock: true,
     details: "Deliciosos snacks de pancita de pollo, perfectos para premiar a tu mascota.",
-    presentation: "Bolsa de 100g",
+    presentation: "Bolsa contenedora de 100gr",
     instructions: "Suministrar como premio entre comidas."
   },
   {
@@ -38,7 +38,7 @@ const hardcodedProducts = [
     price: 3000,
     stock: true,
     details: "Masticable natural que fortalece la dentadura de tu mascota. Vacuno. Tamaño pequeño (12cm aprox.).",
-    presentation: "Bolsa de 100gr",
+    presentation: "Bolsa contenedora de 100gr",
     instructions: "Ideal para gatos y perros de tamaño pequeño."
   },
   {
@@ -48,7 +48,7 @@ const hardcodedProducts = [
     price: 4000,
     stock: true,
     details: "Masticable natural que fortalece la dentadura de tu mascota. Vacuno. Tamaño mediano (16cm aprox.).",
-    presentation: "Bolsa de 150gr",
+    presentation: "Bolsa contenedora de 150gr",
     instructions: "Ideal para perros de tamaño mediano y pequeño."
   },
   {
@@ -58,7 +58,7 @@ const hardcodedProducts = [
     price: 5000,
     stock: true,
     details: "Masticable natural que fortalece la dentadura de tu mascota. Vacuno. Tamaño grande (25cm aprox.).",
-    presentation: "Bolsa de 200gr",
+    presentation: "Bolsa contenedora de 200gr",
     instructions: "Ideal para perros de tamaño grande."
   },
   {
@@ -79,7 +79,7 @@ const hardcodedProducts = [
     price: 1500,
     stock: true,
     details: "Garritas de pollo crudas congeladas.",
-    presentation: "Bolsa de 200gr",
+    presentation: "Bolsa contenedora de 200gr",
     instructions: "No exceder la cantidad recomendada por día. Se recomienda supervisar el consumo en las primeras veces."
   }
   ,
@@ -90,7 +90,7 @@ const hardcodedProducts = [
     price: 3000,
     stock: false,
     details: "Tendón crudo congelado.",
-    presentation: "Bolsa de 200gr",
+    presentation: "Bolsa contenedora de 200gr",
     instructions: "No exceder la cantidad recomendada por día. Se recomienda supervisar el consumo en las primeras veces."
   }
 ];
