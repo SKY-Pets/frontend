@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Typography, TextField, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import StoreIcon from "@mui/icons-material/Store";
 
 const ShippingStep = ({ formData, handleInputChange, errors }) => {
   return (
@@ -60,17 +69,45 @@ const ShippingStep = ({ formData, handleInputChange, errors }) => {
       </Typography>
       <RadioGroup
         value={formData.envio.metodoEnvio}
-        onChange={(e) => handleInputChange("envio", "metodoEnvio", e.target.value)}
+        onChange={(e) =>
+          handleInputChange("envio", "metodoEnvio", e.target.value)
+        }
       >
         <FormControlLabel
           value="retiro"
           control={<Radio />}
-          label="Punto de Retiro - Alvear 1969, Corrientes Capital (Gratis)"
+          label={
+            <Box display="flex" alignItems="center">
+              <StoreIcon style={{ marginRight: 8 }} />
+              <Box>
+                <Typography variant="body1" color="textPrimary">
+                  Punto de Retiro
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Alvear 1969, Corrientes Capital (Gratis)
+                </Typography>
+              </Box>
+            </Box>
+          }
         />
+
         <FormControlLabel
           value="domicilio"
           control={<Radio />}
-          label="Envío a Domicilio (Gratis) - Disponible en Corrientes Capital y alrededores sujeto a dias de entrega"
+          label={
+            <Box display="flex" alignItems="center">
+              <HomeIcon style={{ marginRight: 8 }} />
+              <Box>
+                <Typography variant="body1" color="textPrimary">
+                  Envío a Domicilio
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Disponible en Corrientes Capital y alrededores sujeto a días
+                  de entrega (Gratis) - El vendedor se contactará con usted.
+                </Typography>
+              </Box>
+            </Box>
+          }
         />
       </RadioGroup>
     </Box>

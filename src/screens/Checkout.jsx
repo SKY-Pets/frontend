@@ -33,6 +33,7 @@ const Checkout = () => {
 
   const validateStep = () => {
     if (activeStep === 0) {
+      window.scrollTo(0, 0);
       const requiredFields = ["email", "nombre", "apellido", "dni", "telefono"];
       const newErrors = requiredFields.reduce((acc, field) => {
         if (!formData.envio[field].trim()) {
@@ -47,6 +48,7 @@ const Checkout = () => {
   };
 
   const handleNext = () => {
+    window.scrollTo(0, 0);
     if (validateStep()) {
       if (activeStep === steps.length - 1) {
         handleFinalize();
@@ -58,7 +60,7 @@ const Checkout = () => {
 
   const handleFinalize = () => {
     const formattedCart = cart.map(
-      (item) => `${item.name} (Cantidad: ${item.quantity}, Precio: $${item.price})`
+      (item) => `${item.name} (Cantidad: ${item.quantity}, Precio Unitario: $${item.price})`
     ).join(", ");
   
     const total = cart.reduce((acc, item) => acc + item.quantity * item.price, 0);
@@ -86,6 +88,7 @@ const Checkout = () => {
   
 
   const renderStepContent = (step) => {
+    
     switch (step) {
       case 0:
         return <ShippingStep formData={formData} handleInputChange={handleInputChange} errors={errors} />;
@@ -96,6 +99,8 @@ const Checkout = () => {
       default:
         return null;
     }
+    
+    
   };
 
   if (isCartEmpty) {
@@ -118,7 +123,7 @@ const Checkout = () => {
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between" mt={2}>
-        <Button disabled={activeStep === 0} onClick={() => setActiveStep((prev) => prev - 1)}>
+        <Button disabled={activeStep === 0} onClick={() => {window.scrollTo(0, 0); setActiveStep((prev) => prev - 1)}}>
           Anterior
         </Button>
         <Button onClick={handleNext}>

@@ -128,7 +128,10 @@ const CartModal = ({ open, handleClose }) => {
               alignItems="center"
               mt={3}
             >
-              <Button variant="outlined" onClick={handleClose}>
+              <Button variant="outlined" onClick={() => {
+                  handleClose();
+                  navigate("/products");
+                }}>
                 Seguir comprando
               </Button>
               <Button
