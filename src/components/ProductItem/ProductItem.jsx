@@ -36,7 +36,7 @@ const ProductItem = ({ product }) => {
       <Box sx={{ position: "relative", height: 200 }}>
         <CardMedia
           component="img"
-          image={product.images[0]}
+          image={product.images? product.images[0] : "/logo-arg.png"}
           alt={product.name}
           sx={{ objectFit: "contain", width: "100%", height: "100%" }}
         />

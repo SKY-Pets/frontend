@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getProducts } from "../api/api";
+import { getProductById } from "../api/api";
 import {
   Container,
   Typography,
@@ -14,7 +14,7 @@ import { Carousel } from "react-responsive-carousel";
 import PaymentModal from "../components/PaymentModal/PaymentModal";
 import AppContext from "../context/AppContext"; // Importa tu AppContext
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import CartModal from "../components/CartModal/CartModal"; 
+import CartModal from "../components/CartModal/CartModal";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -26,17 +26,21 @@ const ProductDetail = () => {
   const { addToCart, updateQuantity } = useContext(AppContext);
 
   useEffect(() => {
-    getProducts().then((data) => {
-      const foundProduct = data.find((p) => p.id === parseInt(id));
-      setProduct(foundProduct);
-    });
+    // Llama al nuevo método getProductById para obtener el producto
+    getProductById(id)
+      .then((data) => {
+        setProduct(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching product:", error);
+      });
   }, [id]);
 
   const handleAddToCart = () => {
     if (product && quantity > 0) {
       addToCart({ ...product, quantity }); // Agrega el producto al carrito con la cantidad seleccionada
       updateQuantity(product.id, quantity);
-      setOpenModal(true)
+      setOpenModal(true);
     }
   };
 
@@ -49,14 +53,22 @@ const ProductDetail = () => {
       <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={4}>
         <Box flex={1}>
           <Carousel showThumbs={false}>
-            {product.images.map((img, index) => (
+            
+            {product.images ? product.images.map((img, index) => (
               <img
                 key={index}
                 src={img}
                 alt={product.name}
                 style={{ maxWidth: "100%", borderRadius: 8 }}
               />
-            ))}
+            )) : (
+              <img
+                key={1}
+                src={'/logo-arg.png'}
+                alt={product.name}
+                style={{ maxWidth: "100%", borderRadius: 8 }}
+              />
+            )}
           </Carousel>
         </Box>
 

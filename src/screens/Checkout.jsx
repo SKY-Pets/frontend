@@ -66,6 +66,8 @@ const Checkout = () => {
 
     const orderItems = cart.map((item) => ({
       productId: item.id,
+      price: item.price,
+      name: item.name,
       quantity: item.quantity,
     }));
 
