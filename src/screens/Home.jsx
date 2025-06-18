@@ -31,7 +31,7 @@ const Home = () => {
             color="text"
             fontWeight="bold"
             sx={{
-                whiteSpace: { xs: "nowrap", md: "normal" },
+              whiteSpace: { xs: "nowrap", md: "normal" },
               fontSize: { xs: "1.8rem", md: "3rem" }, // Ajusta tamaño en móviles
             }}
           >
@@ -43,6 +43,27 @@ const Home = () => {
           <Typography variant="body1" color="textSecondary" mb={4}>
             Explora nuestra tienda y descubre los mejores productos 
             para tu compa 🦦
+          </Typography>
+
+          {/* Leyenda 1 */}
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            sx={{ mt: 2 }}
+          >
+            Todos nuestros productos son aptos para perros y gatos. 
+            Sin embargo, recomendamos consultar con su veterinario 
+            antes de su consumo.
+          </Typography>
+
+          {/* Leyenda 2 */}
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            sx={{ mt: 1 }}
+          >
+            Los productos congelados se entregan congelados. 
+            ¡No olvides traer tu conservadora si no estarás en casa! 😉
           </Typography>
         </Box>
 
@@ -56,4 +77,3 @@ const Home = () => {
 };
 
 export default Home;
-
