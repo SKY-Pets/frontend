@@ -35,7 +35,7 @@ const CartModal = ({ open, handleClose }) => {
   );
 
   const isCartEmpty = cart.length === 0;
-
+  console.log(cart);
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -86,7 +86,9 @@ const CartModal = ({ open, handleClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={item.name}
-                      secondary={`Cantidad: ${item.quantity} x Precio unitario: $${item.price.toLocaleString()} | Subtotal: $${(
+                      secondary={`Cantidad: ${
+                        item.quantity
+                      } x Precio unitario: $${item.price.toLocaleString()} | Subtotal: $${(
                         item.price * item.quantity
                       ).toLocaleString()}`}
                     />
@@ -128,10 +130,13 @@ const CartModal = ({ open, handleClose }) => {
               alignItems="center"
               mt={3}
             >
-              <Button variant="outlined" onClick={() => {
+              <Button
+                variant="outlined"
+                onClick={() => {
                   handleClose();
                   navigate("/products");
-                }}>
+                }}
+              >
                 Seguir comprando
               </Button>
               <Button
@@ -146,6 +151,46 @@ const CartModal = ({ open, handleClose }) => {
                 Iniciar compra
               </Button>
             </Box>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#25D366", // Color de WhatsApp
+                color: "white",
+                "&:hover": { bgcolor: "#1DA851" },
+                borderRadius: "20px",
+                textTransform: "none",
+                fontWeight: "bold",
+                mt: 2,
+              }}
+              onClick={() => {
+                const items = cart
+                  .map(
+                    (item) =>
+                      `- ${item.name}:\n  Cantidad: ${
+                        item.quantity
+                      } x $${item.price.toLocaleString()} = $${(
+                        item.price * item.quantity
+                      ).toLocaleString()}`
+                  )
+                  .join("\n\n"); // Doble salto de línea para separar ítems
+
+                const totalAmount = cart.reduce(
+                  (total, item) => total + item.price * item.quantity,
+                  0
+                );
+
+                const message = `Hola, quiero pedir:\n\n${items}\n\nTotal: $${totalAmount.toLocaleString()}\n\nMi nombre es: `;
+                const phoneNumber = "+543794404726";
+                const encodedMessage = encodeURIComponent(message);
+                window.open(
+                  `https://wa.me/${phoneNumber}?text=${encodedMessage}`,
+                  "_blank"
+                );
+              }}
+              disabled={isCartEmpty}
+            >
+              Pedido por WhatsApp!
+            </Button>
           </Box>
         )}
       </Box>

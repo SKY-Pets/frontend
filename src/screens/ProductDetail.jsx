@@ -30,6 +30,7 @@ const ProductDetail = () => {
     getProductById(id)
       .then((data) => {
         setProduct(data);
+      window.scrollTo(0, 0); // Scroll to top when the component is mounted or the product is changed
       })
       .catch((error) => {
         console.error("Error fetching product:", error);

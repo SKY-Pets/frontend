@@ -1,5 +1,14 @@
 import React, { useRef, useState } from "react";
-import { Container, Box, Typography, Button, TextField, Snackbar, IconButton,Divider } from "@mui/material";
+import {
+  Container,
+  Box,
+  Typography,
+  Button,
+  TextField,
+  Snackbar,
+  IconButton,
+  Divider,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { Email, Instagram, WhatsApp } from "@mui/icons-material";
 import emailjs from "@emailjs/browser";
@@ -33,11 +42,12 @@ const Contact = () => {
         ¡Contáctanos!
       </Typography>
       <Typography variant="body1" align="center" gutterBottom>
-        Estamos aquí para ayudarte. Usa el formulario para enviarnos un mensaje, o conecta con nosotros en nuestras redes.
+        Estamos aquí para ayudarte. Usa el formulario para enviarnos un mensaje,
+        o conecta con nosotros en nuestras redes.
       </Typography>
 
-{/* Redes Sociales */}
-<Box
+      {/* Redes Sociales */}
+      <Box
         sx={{
           mt: 4,
           display: "flex",
@@ -62,7 +72,7 @@ const Contact = () => {
           <Instagram fontSize="large" />
         </IconButton>
         <IconButton
-          href="mailto:sky.lb2020@gmail.com"
+          href="mailto:skypets@skypets.com.ar"
           target="_blank"
           rel="noopener noreferrer"
           color="secondary"
@@ -88,7 +98,12 @@ const Contact = () => {
         }}
       >
         <TextField name="to_name" label="Nombre" fullWidth required />
-        <TextField name="from_name" label="Correo Electrónico" fullWidth required />
+        <TextField
+          name="from_name"
+          label="Correo Electrónico"
+          fullWidth
+          required
+        />
         <TextField
           name="message"
           label="Mensaje"
@@ -105,9 +120,11 @@ const Contact = () => {
         >
           Enviar
         </Button>
+        <Divider sx={{ backgroundColor: "black", height: 1, my: 2 }} />
+        <Typography variant="body1" align="center" gutterBottom>
+          skypets@skypets.com.ar📬  @skypetsctes
+        </Typography>
       </Box>
-
-      
 
       {/* Notificaciones */}
       <Snackbar
