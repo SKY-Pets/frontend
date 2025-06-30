@@ -179,7 +179,7 @@ const CartModal = ({ open, handleClose }) => {
                   0
                 );
 
-                const message = `Hola, quiero pedir:\n\n${items}\n\nTotal: $${totalAmount.toLocaleString()}\n\nMi nombre es: `;
+                const message = `Hola 👋, me gustaría pedir:\n\n${items}\n\n→ Total: $${totalAmount.toLocaleString()}\n\n Mi nombre es: `;
                 const phoneNumber = "+543794404726";
                 const encodedMessage = encodeURIComponent(message);
                 window.open(

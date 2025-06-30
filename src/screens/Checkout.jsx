@@ -60,39 +60,39 @@ const Checkout = () => {
     return orderId;
   };
 
-  const handleFinalize = async () => {
-    setLoading(true);
-    setError(null);
+ const handleFinalize = () => {
+  setLoading(true);
+  setError(null);
 
-    const orderItems = cart.map((item) => ({
-      productId: item.id,
-      price: item.price,
-      name: item.name,
-      quantity: item.quantity,
-    }));
+  const orderItems = cart.map((item) => ({
+    productId: item.id,
+    price: item.price,
+    name: item.name,
+    quantity: item.quantity,
+  }));
 
-    const totalPrice = cart.reduce(
-      (acc, item) => acc + item.quantity * item.price,
-      0
-    );
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
+  );
 
-    const orderData = {
-      orderId: generateOrderId(),
-      customerDni: formData.envio.dni,
-      customerName: `${formData.envio.nombre} ${formData.envio.apellido}`,
-      customerEmail: formData.envio.email,
-      customerPhone: formData.envio.telefono,
-      paymentType: formData.pago.metodo,
-      delivery: formData.envio.metodoEnvio,
-      deliveryAddress: `${formData.pago.calle} ${formData.pago.numero}`,
-      items: orderItems,
-      totalPrice,
-      orderDate: new Date().toISOString().split("T")[0],
-      status: "pending",
-    };
+  const orderData = {
+    orderId: generateOrderId(),
+    customerDni: formData.envio.dni,
+    customerName: `${formData.envio.nombre} ${formData.envio.apellido}`,
+    customerEmail: formData.envio.email,
+    customerPhone: formData.envio.telefono,
+    paymentType: formData.pago.metodo,
+    delivery: formData.envio.metodoEnvio,
+    deliveryAddress: `${formData.pago.calle} ${formData.pago.numero}`,
+    items: orderItems,
+    totalPrice,
+    orderDate: new Date().toISOString().split("T")[0],
+    status: "pending",
+  };
 
-    try {
-      const response = await createOrder(orderData);
+  createOrder(orderData)
+    .then((response) => {
       setOrderId(response.id);
 
       // Enviar correo electrónico
@@ -102,7 +102,8 @@ const Checkout = () => {
             `${item.name} (Cantidad: ${item.quantity}, Precio Unitario: $${item.price})`
         )
         .join(", ");
-      await emailjs.send(
+
+      return emailjs.send(
         "service_sly4t6n",
         "template_w7yvhut",
         {
@@ -114,15 +115,22 @@ const Checkout = () => {
         },
         "CHl40qhYDkG3nJsEZ"
       );
-
+    })
+    .then(() => {
+      console.log("Correo enviado exitosamente");
+    })
+    .catch((err) => {
+      console.error(
+        "El pedido se creó correctamente, pero hubo un problema con el correo:",
+        err
+      );
+    })
+    .finally(() => {
       setModalOkOpen(true);
-    } catch (err) {
-      console.error("Error durante la finalización:", err);
-      setError("Ocurrió un error al procesar su pedido. Intente nuevamente.");
-    } finally {
       setLoading(false);
-    }
-  };
+    });
+};
+
 
   const validateStep = () => {
     if (activeStep === 0) {

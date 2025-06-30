@@ -23,14 +23,14 @@ const PaymentStep = ({ formData, handleInputChange }) => {
         Datos para entrega a Domicilio y facturación
       </Typography>
       <TextField
-        label="Calle"
+        label="Calle (opcional)"
         fullWidth
         margin="normal"
         value={formData.pago.calle}
         onChange={(e) => handleInputChange("pago", "calle", e.target.value)}
       />
       <TextField
-        label="Número"
+        label="Número (opcional)"
         fullWidth
         margin="normal"
         value={formData.pago.numero}
