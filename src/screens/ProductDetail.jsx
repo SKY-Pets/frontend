@@ -52,7 +52,7 @@ const ProductDetail = () => {
   return (
     <Container sx={{ mt: 4 }}>
       <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={4}>
-        <Box flex={1}>
+        <Box flex={1} sx={{ px: { xs: 2, md: 0} }}>
           <Carousel showThumbs={false}>
             
             {product.images ? product.images.map((img, index) => (
